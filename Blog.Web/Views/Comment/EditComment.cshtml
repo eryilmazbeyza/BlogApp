@@ -1,26 +1,21 @@
-﻿@model Blog.Web.Models.PostViewModel
+﻿@model Blog.Web.Models.CommentViewModel
 
 @{
-    ViewData["Title"] = "EditPost";
+    ViewData["Title"] = "EditComment";
 }
 
-<h1>Edit Post</h1>
+<h1>Edit Comment</h1>
 
-<h4>PostViewModel</h4>
+<h4>CommentViewModel</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="EditPost">
+        <form asp-action="EditComment">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="PostId" class="control-label"></label>
-                <input asp-for="PostId" class="form-control" />
-                <span asp-validation-for="PostId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Title" class="control-label"></label>
-                <input asp-for="Title" class="form-control" />
-                <span asp-validation-for="Title" class="text-danger"></span>
+                <label asp-for="CommentId" class="control-label"></label>
+                <input asp-for="CommentId" class="form-control" />
+                <span asp-validation-for="CommentId" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Content" class="control-label"></label>
@@ -28,23 +23,8 @@
                 <span asp-validation-for="Content" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Author" class="control-label"></label>
-                <input asp-for="Author" class="form-control" />
-                <span asp-validation-for="Author" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ImageUrl" class="control-label"></label>
-                <input asp-for="ImageUrl" class="form-control" />
-                <span asp-validation-for="ImageUrl" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Rating" class="control-label"></label>
-                <input asp-for="Rating" class="form-control" />
-                <span asp-validation-for="Rating" class="text-danger"></span>
-            </div>
-            <div class="form-group">
                 <label asp-for="Created" class="control-label"></label>
-                <input asp-for="Created" class="form-control", type="date" />
+                <input asp-for="Created" class="form-control" />
                 <span asp-validation-for="Created" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -54,7 +34,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="LastModified" class="control-label"></label>
-                <input asp-for="LastModified" class="form-control", type="date" />
+                <input asp-for="LastModified" class="form-control" />
                 <span asp-validation-for="LastModified" class="text-danger"></span>
             </div>
             <div class="form-group">

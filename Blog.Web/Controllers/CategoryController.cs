@@ -3,23 +3,22 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Blog.Web.Controllers;
 
-public class PostController : Controller
+public class CategoryController : Controller
 {
-
     [HttpGet]
     public async Task<IActionResult> Index(string searchBy, string search)
     {
-        List<PostViewModel> posts = new List<PostViewModel>();
+        List<CategoryViewModel> cats = new List<CategoryViewModel>();
 
         using (var client = new HttpClient())
         {
             client.BaseAddress = new Uri("https://localhost:7002/api/");
 
-            HttpResponseMessage response = await client.GetAsync($"Post?searchBy={searchBy}&search={search}");
+            HttpResponseMessage response = await client.GetAsync($"Category?searchBy={searchBy}&search={search}");
 
             if (response.IsSuccessStatusCode)
             {
-                posts = await response.Content.ReadAsAsync<List<PostViewModel>>();
+                cats = await response.Content.ReadAsAsync<List<CategoryViewModel>>();
             }
             else
             {
@@ -27,29 +26,25 @@ public class PostController : Controller
             }
         }
 
-        if (searchBy == "Title")
+        if (searchBy == "Name")
         {
-            posts = posts.Where(x => x.Title == search || search == null).ToList();
-        }
-        else
-        {
-            posts = posts.Where(x => x.Content == search || search == null).ToList();
+            cats = cats.Where(x => x.Name == search || search == null).ToList();
         }
 
-        return View(posts);
+        return View(cats);
     }
 
     [HttpGet]
-    public async Task<IActionResult> PostList()
+    public async Task<IActionResult> CategoryList()
     {
-        List<PostViewModel> posts = new List<PostViewModel>();
+        List<CategoryViewModel> cats = new List<CategoryViewModel>();
         using (var client = new HttpClient())
         {
             client.BaseAddress = new Uri("https://localhost:7002/api/");
-            HttpResponseMessage response = await client.GetAsync("Post");
+            HttpResponseMessage response = await client.GetAsync("Category");
             if (response.IsSuccessStatusCode)
             {
-                posts = await response.Content.ReadAsAsync<List<PostViewModel>>();
+                cats = await response.Content.ReadAsAsync<List<CategoryViewModel>>();
 
             }
             else
@@ -57,25 +52,25 @@ public class PostController : Controller
                 ModelState.AddModelError(string.Empty, "Error Occured");
             }
         }
-        return View(posts);
+        return View(cats);
     }
 
     [HttpGet]
-    public IActionResult AddPost()
+    public IActionResult AddCategory()
     {
         return View();
     }
 
     [HttpPost]
-    public async Task<IActionResult> AddPost(PostViewModel postViewModel)
+    public async Task<IActionResult> AddCategory(CategoryViewModel categoryViewModel)
     {
         using (var client = new HttpClient())
         {
             client.BaseAddress = new Uri("https://localhost:7002/api/");
-            HttpResponseMessage response = await client.PostAsJsonAsync("Post", postViewModel);
+            HttpResponseMessage response = await client.PostAsJsonAsync("Category", categoryViewModel);
             if (response.IsSuccessStatusCode)
             {
-                return RedirectToAction("Index", "Post");
+                return RedirectToAction("Index", "Category");
             }
         }
         ModelState.AddModelError(string.Empty, "Error Occurred");
@@ -83,17 +78,17 @@ public class PostController : Controller
     }
 
     [HttpGet]
-    public async Task<IActionResult> EditPost(int id)
+    public async Task<IActionResult> EditCategory(int id)
     {
-        PostViewModel postViewModel = new PostViewModel();
+        CategoryViewModel categoryViewModel = new CategoryViewModel();
 
         using (var client = new HttpClient())
         {
             client.BaseAddress = new Uri("https://localhost:7002/api/");
-            HttpResponseMessage response = await client.GetAsync("Post/" + id);
+            HttpResponseMessage response = await client.GetAsync("Category/" + id);
             if (response.IsSuccessStatusCode)
             {
-                postViewModel = await response.Content.ReadAsAsync<PostViewModel>();
+                categoryViewModel = await response.Content.ReadAsAsync<CategoryViewModel>();
 
             }
             else
@@ -101,19 +96,19 @@ public class PostController : Controller
                 ModelState.AddModelError(string.Empty, "Error Occured");
             }
         }
-        return View(postViewModel);
+        return View(categoryViewModel);
     }
 
     [HttpPost]
-    public async Task<IActionResult> EditPost(PostViewModel postViewModel)
+    public async Task<IActionResult> EditCategory(CategoryViewModel categoryViewModel)
     {
         using (var client = new HttpClient())
         {
             client.BaseAddress = new Uri("https://localhost:7002/api/");
-            HttpResponseMessage response = await client.PutAsJsonAsync("Post/" + postViewModel.PostId, postViewModel);
+            HttpResponseMessage response = await client.PutAsJsonAsync("Category/" + categoryViewModel.CategoryId, categoryViewModel);
             if (response.IsSuccessStatusCode)
             {
-                return RedirectToAction("Index", "Post");
+                return RedirectToAction("Index", "Category");
             }
         }
         ModelState.AddModelError(string.Empty, "Error Occurred");
@@ -121,15 +116,15 @@ public class PostController : Controller
     }
 
     [HttpGet]
-    public async Task<IActionResult> DeletePost(int id)
+    public async Task<IActionResult> DeleteCategory(int id)
     {
         using (var client = new HttpClient())
         {
             client.BaseAddress = new Uri("https://localhost:7002/api/");
-            HttpResponseMessage response = await client.DeleteAsync("Post/" + id);
+            HttpResponseMessage response = await client.DeleteAsync("Category/" + id);
             if (response.IsSuccessStatusCode)
             {
-                return RedirectToAction("Index", "Post");
+                return RedirectToAction("Index", "Category");
 
             }
             else
@@ -137,6 +132,6 @@ public class PostController : Controller
                 ModelState.AddModelError(string.Empty, "Error Occured");
             }
         }
-        return View("Index", new List<PostViewModel>());
+        return View("Index", new List<CategoryViewModel>());
     }
 }

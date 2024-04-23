@@ -12,16 +12,13 @@ namespace Blog.Persistence.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "PostClasses",
+                name: "CategoryClasses",
                 columns: table => new
                 {
-                    PostId = table.Column<int>(type: "int", nullable: false)
+                    CategoryId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Title = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Content = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Author = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Rating = table.Column<int>(type: "int", nullable: true),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Created = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
                     CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     LastModified = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
@@ -29,7 +26,7 @@ namespace Blog.Persistence.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_PostClasses", x => x.PostId);
+                    table.PrimaryKey("PK_CategoryClasses", x => x.CategoryId);
                 });
 
             migrationBuilder.CreateTable(
@@ -54,13 +51,39 @@ namespace Blog.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "CategoryClasses",
+                name: "PostClasses",
                 columns: table => new
                 {
-                    CategoryId = table.Column<int>(type: "int", nullable: false)
+                    PostId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Title = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Content = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Author = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Rating = table.Column<int>(type: "int", nullable: true),
+                    CategoryId = table.Column<int>(type: "int", nullable: true),
+                    Created = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
+                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    LastModified = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
+                    LastModifiedBy = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PostClasses", x => x.PostId);
+                    table.ForeignKey(
+                        name: "FK_PostClasses_CategoryClasses_CategoryId",
+                        column: x => x.CategoryId,
+                        principalTable: "CategoryClasses",
+                        principalColumn: "CategoryId");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "CommentClass",
+                columns: table => new
+                {
+                    CommentId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Content = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     PostId = table.Column<int>(type: "int", nullable: true),
                     Created = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
                     CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -69,31 +92,39 @@ namespace Blog.Persistence.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CategoryClasses", x => x.CategoryId);
+                    table.PrimaryKey("PK_CommentClass", x => x.CommentId);
                     table.ForeignKey(
-                        name: "FK_CategoryClasses_PostClasses_PostId",
+                        name: "FK_CommentClass_PostClasses_PostId",
                         column: x => x.PostId,
                         principalTable: "PostClasses",
                         principalColumn: "PostId");
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_CategoryClasses_PostId",
-                table: "CategoryClasses",
+                name: "IX_CommentClass_PostId",
+                table: "CommentClass",
                 column: "PostId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PostClasses_CategoryId",
+                table: "PostClasses",
+                column: "CategoryId");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "CategoryClasses");
+                name: "CommentClass");
 
             migrationBuilder.DropTable(
                 name: "Users");
 
             migrationBuilder.DropTable(
                 name: "PostClasses");
+
+            migrationBuilder.DropTable(
+                name: "CategoryClasses");
         }
     }
 }

@@ -1,43 +1,28 @@
-﻿@model IEnumerable<Blog.Web.Models.PostViewModel>
+﻿@model IEnumerable<Blog.Web.Models.CommentViewModel>
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-@using (Html.BeginForm("Index", "Post", FormMethod.Get))
+@using (Html.BeginForm("Index", "Comment", FormMethod.Get))
 {
-    <h2>Post</h2>
+    <h2>Comment</h2>
     <b>Search By:</b>
-    @Html.RadioButton("SearchBy", "Title", true)
-
-    <text>Title</text>
     @Html.RadioButton("SearchBy", "Content", true)
-
     <text>Content</text>
     <br>
+
     @Html.TextBox("search", "", htmlAttributes: new { @class = " w-50 form-control" })
     <input type="submit" value="Search" class="btn btn-success" />
 
     <div class="table">
         <div class="col-header">
-            @Html.ActionLink("Add Post", "AddPost", null, new { @class = "btn" })
+            @Html.ActionLink("Add Comment", "AddComment", null, new { @class = "btn" })
         </div>
     </div>
     <table class="table">
         <thead>
             <tr>
                 <th>
-                    @Html.DisplayNameFor(model => model.Title)
-                </th>
-                <th>
                     @Html.DisplayNameFor(model => model.Content)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Author)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.ImageUrl)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Rating)
                 </th>
                 <th>
                     @Html.DisplayNameFor(model => model.Created)
@@ -52,7 +37,7 @@
                     @Html.DisplayNameFor(model => model.LastModifiedBy)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.PostId)
+                    @Html.DisplayNameFor(model => model.CommentId)
                 </th>
                 <th>
                     Actions
@@ -65,19 +50,7 @@
             {
                 <tr>
                     <td>
-                        @Html.DisplayFor(modelItem => item.Title)
-                    </td>
-                    <td>
                         @Html.DisplayFor(modelItem => item.Content)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Author)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.ImageUrl)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Rating)
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.Created)
@@ -92,24 +65,16 @@
                         @Html.DisplayFor(modelItem => item.LastModifiedBy)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.PostId)
+                        @Html.DisplayFor(modelItem => item.CommentId)
                     </td>
                     <td>
-                        @* <a asp-action="Edit" asp-route-id="@item.PostId">Edit</a> |
-                        <a asp-action="Delete" asp-route-id="@item.PostId">Delete</a> *@
                         <div class="col">
-                            @Html.ActionLink("Edit", "EditPost", new { id = item.PostId })
-                            @Html.ActionLink("Delete", "DeletePost", new { id = item.PostId })
+                            @Html.ActionLink("Edit", "EditComment", new { id = item.CommentId })
+                            @Html.ActionLink("Delete", "DeleteComment", new { id = item.CommentId })
                         </div>
                     </td>
                 </tr>
             }
         </tbody>
     </table>
-
-
-             
-            
-       
-    
 }

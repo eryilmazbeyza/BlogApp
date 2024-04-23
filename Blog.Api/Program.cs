@@ -17,6 +17,8 @@ builder.Services.AddTransient<IPostService, PostService>();
 builder.Services.AddTransient<IPostRepository, PostRepository>();
 builder.Services.AddTransient<ICategoryService, CategoryService>();
 builder.Services.AddTransient<ICategoryRepository, CategoryRepository>();
+builder.Services.AddTransient<ICommentService, CommentService>();
+builder.Services.AddTransient<ICommentRepository, CommentRepository>();
 builder.Services.AddCors(o => o.AddPolicy("default", builder =>
 {
     builder.AllowAnyOrigin()

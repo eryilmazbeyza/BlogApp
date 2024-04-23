@@ -13,8 +13,10 @@ public class ApplicationDbContext : DbContext, IApplicationDbContext
     }
     public DbSet<User> Users { get; set; }
     public DbSet<CategoryClass> CategoryClasses => Set<CategoryClass>();
-
+    public DbSet<CommentClass> CommentClasses => Set<CommentClass>();
     public DbSet<PostClass> PostClasses => Set<PostClass>();
+
+    public DbSet<CommentClass> CommentClass => throw new NotImplementedException();
 
     protected override void OnModelCreating(ModelBuilder builder)
     {

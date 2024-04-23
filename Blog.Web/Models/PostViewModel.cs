@@ -13,4 +13,7 @@ public class PostViewModel : BaseAuditableEntityViewModel
     public string? Author { get; set; }
     public string? ImageUrl { get; set; }
     public int? Rating { get; set; }
+
+    [ForeignKey("CategoryId")]
+    public CategoryViewModel? CategoryClass { get; set; } = null!;
 }

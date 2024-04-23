@@ -10,6 +10,4 @@ public class CategoryViewModel: BaseAuditableEntityViewModel
     public string? Name { get; set; }
     public string? Description { get; set; }
 
-    [ForeignKey("PostId")]
-    public PostViewModel? PostClass { get; set; } = null!;
 }

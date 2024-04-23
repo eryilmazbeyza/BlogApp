@@ -1,25 +1,25 @@
 ﻿using Blog.Web.Models;
 using Microsoft.AspNetCore.Mvc;
+using static Microsoft.AspNetCore.Razor.Language.TagHelperMetadata;
 
 namespace Blog.Web.Controllers;
 
-public class PostController : Controller
+public class CommentController : Controller
 {
-
     [HttpGet]
     public async Task<IActionResult> Index(string searchBy, string search)
     {
-        List<PostViewModel> posts = new List<PostViewModel>();
+        List<CommentViewModel> comms = new List<CommentViewModel>();
 
         using (var client = new HttpClient())
         {
             client.BaseAddress = new Uri("https://localhost:7002/api/");
 
-            HttpResponseMessage response = await client.GetAsync($"Post?searchBy={searchBy}&search={search}");
+            HttpResponseMessage response = await client.GetAsync($"Comment?searchBy={searchBy}&search={search}");
 
             if (response.IsSuccessStatusCode)
             {
-                posts = await response.Content.ReadAsAsync<List<PostViewModel>>();
+                comms = await response.Content.ReadAsAsync<List<CommentViewModel>>();
             }
             else
             {
@@ -27,29 +27,24 @@ public class PostController : Controller
             }
         }
 
-        if (searchBy == "Title")
+        if (searchBy == "Content")
         {
-            posts = posts.Where(x => x.Title == search || search == null).ToList();
-        }
-        else
-        {
-            posts = posts.Where(x => x.Content == search || search == null).ToList();
+            comms = comms.Where(x => x.Content == search || search == null).ToList();
         }
 
-        return View(posts);
+        return View(comms);
     }
-
     [HttpGet]
-    public async Task<IActionResult> PostList()
+    public async Task<IActionResult> CommentList()
     {
-        List<PostViewModel> posts = new List<PostViewModel>();
+        List<CommentViewModel> comms = new List<CommentViewModel>();
         using (var client = new HttpClient())
         {
             client.BaseAddress = new Uri("https://localhost:7002/api/");
-            HttpResponseMessage response = await client.GetAsync("Post");
+            HttpResponseMessage response = await client.GetAsync("Comment");
             if (response.IsSuccessStatusCode)
             {
-                posts = await response.Content.ReadAsAsync<List<PostViewModel>>();
+                comms = await response.Content.ReadAsAsync<List<CommentViewModel>>();
 
             }
             else
@@ -57,25 +52,25 @@ public class PostController : Controller
                 ModelState.AddModelError(string.Empty, "Error Occured");
             }
         }
-        return View(posts);
+        return View(comms);
     }
 
     [HttpGet]
-    public IActionResult AddPost()
+    public IActionResult AddComment()
     {
         return View();
     }
 
     [HttpPost]
-    public async Task<IActionResult> AddPost(PostViewModel postViewModel)
+    public async Task<IActionResult> AddComment(CommentViewModel commentViewModel)
     {
         using (var client = new HttpClient())
         {
             client.BaseAddress = new Uri("https://localhost:7002/api/");
-            HttpResponseMessage response = await client.PostAsJsonAsync("Post", postViewModel);
+            HttpResponseMessage response = await client.PostAsJsonAsync("Comment", commentViewModel);
             if (response.IsSuccessStatusCode)
             {
-                return RedirectToAction("Index", "Post");
+                return RedirectToAction("Index", "Comment");
             }
         }
         ModelState.AddModelError(string.Empty, "Error Occurred");
@@ -83,17 +78,17 @@ public class PostController : Controller
     }
 
     [HttpGet]
-    public async Task<IActionResult> EditPost(int id)
+    public async Task<IActionResult> EditComment(int id)
     {
-        PostViewModel postViewModel = new PostViewModel();
+        CommentViewModel commentViewModel = new CommentViewModel();
 
         using (var client = new HttpClient())
         {
             client.BaseAddress = new Uri("https://localhost:7002/api/");
-            HttpResponseMessage response = await client.GetAsync("Post/" + id);
+            HttpResponseMessage response = await client.GetAsync("Comment/" + id);
             if (response.IsSuccessStatusCode)
             {
-                postViewModel = await response.Content.ReadAsAsync<PostViewModel>();
+                commentViewModel = await response.Content.ReadAsAsync<CommentViewModel>();
 
             }
             else
@@ -101,19 +96,19 @@ public class PostController : Controller
                 ModelState.AddModelError(string.Empty, "Error Occured");
             }
         }
-        return View(postViewModel);
+        return View(commentViewModel);
     }
 
     [HttpPost]
-    public async Task<IActionResult> EditPost(PostViewModel postViewModel)
+    public async Task<IActionResult> EditComment(CommentViewModel commentViewModel)
     {
         using (var client = new HttpClient())
         {
             client.BaseAddress = new Uri("https://localhost:7002/api/");
-            HttpResponseMessage response = await client.PutAsJsonAsync("Post/" + postViewModel.PostId, postViewModel);
+            HttpResponseMessage response = await client.PutAsJsonAsync("Comment/" + commentViewModel.CommentId, commentViewModel);
             if (response.IsSuccessStatusCode)
             {
-                return RedirectToAction("Index", "Post");
+                return RedirectToAction("Index", "Comment");
             }
         }
         ModelState.AddModelError(string.Empty, "Error Occurred");
@@ -121,15 +116,15 @@ public class PostController : Controller
     }
 
     [HttpGet]
-    public async Task<IActionResult> DeletePost(int id)
+    public async Task<IActionResult> DeleteComment(int id)
     {
         using (var client = new HttpClient())
         {
             client.BaseAddress = new Uri("https://localhost:7002/api/");
-            HttpResponseMessage response = await client.DeleteAsync("Post/" + id);
+            HttpResponseMessage response = await client.DeleteAsync("Comment/" + id);
             if (response.IsSuccessStatusCode)
             {
-                return RedirectToAction("Index", "Post");
+                return RedirectToAction("Index", "Comment");
 
             }
             else
@@ -137,6 +132,6 @@ public class PostController : Controller
                 ModelState.AddModelError(string.Empty, "Error Occured");
             }
         }
-        return View("Index", new List<PostViewModel>());
+        return View("Index", new List<CommentViewModel>());
     }
 }

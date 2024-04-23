@@ -11,7 +11,7 @@ public class UserController : Controller
         List<UserViewModel> users = new List<UserViewModel>();
         using (var client = new HttpClient())
         {
-            client.BaseAddress = new Uri("https://localhost:7191/api/");
+            client.BaseAddress = new Uri("https://localhost:7002/api/");
             HttpResponseMessage response = await client.GetAsync("User");
             if (response.IsSuccessStatusCode)
             {
@@ -37,7 +37,7 @@ public class UserController : Controller
     {
         using (var client = new HttpClient())
         {
-            client.BaseAddress = new Uri("https://localhost:7191/api/");
+            client.BaseAddress = new Uri("https://localhost:7002/api/");
             HttpResponseMessage response = await client.PostAsJsonAsync("User", userViewModel);
             if (response.IsSuccessStatusCode)
             {

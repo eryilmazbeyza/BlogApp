@@ -48,14 +48,42 @@ namespace Blog.Persistence.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
+                    b.HasKey("CategoryId");
+
+                    b.ToTable("CategoryClasses");
+                });
+
+            modelBuilder.Entity("Blog.Domain.Entities.CommentClass", b =>
+                {
+                    b.Property<int>("CommentId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CommentId"));
+
+                    b.Property<string>("Content")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTimeOffset?>("Created")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTimeOffset?>("LastModified")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int?>("PostId")
                         .HasColumnType("int");
 
-                    b.HasKey("CategoryId");
+                    b.HasKey("CommentId");
 
                     b.HasIndex("PostId");
 
-                    b.ToTable("CategoryClasses");
+                    b.ToTable("CommentClass");
                 });
 
             modelBuilder.Entity("Blog.Domain.Entities.PostClass", b =>
@@ -68,6 +96,9 @@ namespace Blog.Persistence.Migrations
 
                     b.Property<string>("Author")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("CategoryId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Content")
                         .HasColumnType("nvarchar(max)");
@@ -94,6 +125,8 @@ namespace Blog.Persistence.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("PostId");
+
+                    b.HasIndex("CategoryId");
 
                     b.ToTable("PostClasses");
                 });
@@ -143,13 +176,22 @@ namespace Blog.Persistence.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("Blog.Domain.Entities.CategoryClass", b =>
+            modelBuilder.Entity("Blog.Domain.Entities.CommentClass", b =>
                 {
                     b.HasOne("Blog.Domain.Entities.PostClass", "PostClass")
                         .WithMany()
                         .HasForeignKey("PostId");
 
                     b.Navigation("PostClass");
+                });
+
+            modelBuilder.Entity("Blog.Domain.Entities.PostClass", b =>
+                {
+                    b.HasOne("Blog.Domain.Entities.CategoryClass", "CategoryClass")
+                        .WithMany()
+                        .HasForeignKey("CategoryId");
+
+                    b.Navigation("CategoryClass");
                 });
 #pragma warning restore 612, 618
         }
