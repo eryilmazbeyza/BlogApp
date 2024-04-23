@@ -1,9 +1,9 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
 
-namespace Blog.Domain.Entities;
+namespace Blog.Web.Models;
 
-public class PostClass : BaseAuditableEntity
+public class PostViewModel : BaseAuditableEntityViewModel
 {
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -13,7 +13,4 @@ public class PostClass : BaseAuditableEntity
     public string? Author { get; set; }
     public string? ImageUrl { get; set; }
     public int? Rating { get; set; }
-
-    [ForeignKey("CategoryId")]
-    public CategoryClass? CategoryClass { get; set; } = null!;
 }

@@ -9,8 +9,5 @@ public class CategoryClass : BaseAuditableEntity
     public int CategoryId { get; set; }
     public string? Name { get; set; }
     public string? Description { get; set; }
-
-    [ForeignKey("PostId")]
-    public PostClass? PostClass { get; set; } = null!;
 }
 
