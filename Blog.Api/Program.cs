@@ -1,24 +1,39 @@
-using Blog.Application.Common.Interfaces;
-using Blog.Application.Services;
-using Blog.Infrastructure.Repositories;
-using Blog.Persistence.Context;
-using Microsoft.EntityFrameworkCore;
+using Blog.Api;
+using Blog.Application;
+using Blog.Application.Behaviours;
+using Blog.Application.Common.Security;
+using Blog.Application.Common.Security.Jwt;
+using Blog.Persistence;
+using MediatR;
+using Swashbuckle.AspNetCore.SwaggerUI;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
-options.UseSqlServer(builder.Configuration.GetConnectionString("dbcon")));
+// option pattern
+builder.Services.Configure<JwtOptions>(
+    builder.Configuration.GetSection("JwtOptions"));
 
-builder.Services.AddTransient<IUserService, UserService>();
-builder.Services.AddTransient<IUserRepository, UserRepository>();
-builder.Services.AddTransient<IPostService, PostService>();
-builder.Services.AddTransient<IPostRepository, PostRepository>();
-builder.Services.AddTransient<ICategoryService, CategoryService>();
-builder.Services.AddTransient<ICategoryRepository, CategoryRepository>();
-builder.Services.AddTransient<ICommentService, CommentService>();
-builder.Services.AddTransient<ICommentRepository, CommentRepository>();
+// jwt extensions
+var jwtOptions = builder.Configuration.GetSection("JwtOptions").Get<JwtOptions>()!;
+builder.Services.AddCustomTokenAuth(jwtOptions);
+
+
+//services
+builder.Services.AddWebUIServices();
+builder.Services.AddApplicationServices();
+builder.Services.AddPersistenceServices(builder.Configuration);
+
+
+// mediatr
+builder.Services.AddMediatR(cfg =>
+{
+    cfg.RegisterServicesFromAssemblies(AppDomain.CurrentDomain.GetAssemblies());
+    cfg.AddBehavior(typeof(IPipelineBehavior<,>), typeof(AuthorizationBehaviour<,>));
+
+});
+
 builder.Services.AddCors(o => o.AddPolicy("default", builder =>
 {
     builder.AllowAnyOrigin()
@@ -34,18 +49,27 @@ builder.Services.AddSwaggerGen();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
+
+// swagger
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(c =>
+    {
+        c.DisplayRequestDuration();
+        c.SwaggerEndpoint($"/swagger/v1/swagger.json", $"v1");
+        c.SwaggerEndpoint($"/swagger/v2/swagger.json", $"v2");
+        c.DocExpansion(DocExpansion.None);
+    });
 }
-
 app.UseCors("default");
 
 app.UseHttpsRedirection();
 
+// yetkilendirme jwt
+app.UseAuthentication();
+// doðrulama
 app.UseAuthorization();
-
 app.MapControllers();
 
 app.Run();

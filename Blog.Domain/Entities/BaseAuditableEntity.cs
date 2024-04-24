@@ -1,31 +1,13 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿namespace Blog.Domain.Entities;
 
-namespace Blog.Domain.Entities;
-
-public class BaseAuditableEntity
+public abstract class BaseAuditableEntity : BaseEntity
 {
-    public DateTimeOffset? Created { get; set; }
-    public string? CreatedBy { get; set; }
-    public DateTimeOffset? LastModified { get; set; }
-    public string? LastModifiedBy { get; set; }
+    public DateTime? Created { get; set; }
+    public long? CreatedBy { get; set; }
+    public DateTime? LastModified { get; set; }
+    public long? LastModifiedBy { get; set; }
+    public DateTime? Deleted { get; set; }
+    public long? DeletedBy { get; set; }
 
-    private readonly List<BaseEvent> _domainEvents = new();
-
-    [NotMapped]
-    public IReadOnlyCollection<BaseEvent> DomainEvents => _domainEvents.AsReadOnly();
-
-    public void AddDomainEvent(BaseEvent domainEvent)
-    {
-        _domainEvents.Add(domainEvent);
-    }
-
-    public void RemoveDomainEvent(BaseEvent domainEvent)
-    {
-        _domainEvents.Remove(domainEvent);
-    }
-
-    public void ClearDomainEvents()
-    {
-        _domainEvents.Clear();
-    }
+    public bool IsDeleted { get; set; } = false;
 }
