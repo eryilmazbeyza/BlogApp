@@ -3,9 +3,9 @@ using Microsoft.EntityFrameworkCore.Query;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 using System.Reflection;
-using Blog.Application.Common.Context;
 using Blog.Persistence.Inceptors;
 using Blog.Persistence.Configuration;
+using Blog.Application.Common.Interfaces;
 
 namespace Blog.Persistence.Context;
 

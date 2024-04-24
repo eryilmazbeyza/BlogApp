@@ -6,9 +6,9 @@ namespace Blog.Application.Common.Interfaces;
 public interface IApplicationDbContext
 {
     DbSet<User> Users { get; }
-    DbSet<Category> CategoryClasses { get; }
-    DbSet<Post> PostClasses { get; }
-    DbSet<Comment> CommentClasses { get; }
+    DbSet<Category> Categories { get; }
+    DbSet<Post> Posts { get; }
+    DbSet<Comment> Comments { get; }
 
     Task<int> SaveChangesAsync(CancellationToken cancellationToken);
 }

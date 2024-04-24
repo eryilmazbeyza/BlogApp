@@ -1,4 +1,4 @@
-﻿using Blog.Application.Common.Context;
+﻿using Blog.Application.Common.Interfaces;
 using Blog.Persistence.Context;
 using Blog.Persistence.Inceptors;
 using Microsoft.EntityFrameworkCore;

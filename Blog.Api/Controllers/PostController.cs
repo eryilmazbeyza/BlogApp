@@ -2,6 +2,7 @@
 using Blog.Application.Features.Post.Commands.Create;
 using Blog.Application.Features.Post.Commands.Delete;
 using Blog.Application.Features.Post.Commands.Update;
+using Blog.Application.Features.Post.Queries.PostListWithPagination;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Blog.Api.Controllers;
@@ -13,7 +14,7 @@ public class PostController : ApiControllerBase
 
     [HttpGet("PostListWithPagination")]
     public async Task<ActionResult<Result<PaginatedList<PostListDto>>>> PostListWithPagination() =>
-        await Mediator.Send(new GetPostListWithPaginationQuery());
+        await Mediator.Send(new PostListWithPaginationQuery());
 
     [HttpPost]
     public async Task<ActionResult<Result<long>>> Create(CreatePostCommand command) =>

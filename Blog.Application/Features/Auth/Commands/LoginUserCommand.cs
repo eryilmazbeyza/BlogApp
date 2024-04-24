@@ -1,12 +1,11 @@
 ﻿using AutoMapper;
-using Blog.Application.Common.Context;
+using Blog.Application.Common.Interfaces;
 using Blog.Application.Common.Models;
 using Blog.Application.Common.Security;
 using Blog.Application.Common.Security.Jwt;
 using Blog.Application.DTOs.Token;
 using Blog.Application.DTOs.User;
 using MediatR;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 
 namespace Blog.Application.Features.Auth.Commands;
