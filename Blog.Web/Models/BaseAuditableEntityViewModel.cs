@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Blog.Web.Models;
 
-public class BaseAuditableEntityViewModel
+public class BaseAuditableEntityViewModel : BaseEntityViewModel
 {
     
     public DateTimeOffset? Created { get; set; }

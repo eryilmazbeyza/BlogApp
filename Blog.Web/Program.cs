@@ -1,3 +1,5 @@
+using Blog.Web.HttpClient;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -8,6 +10,9 @@ builder.Services.AddCookiePolicy(options =>
     options.HttpOnly = Microsoft.AspNetCore.CookiePolicy.HttpOnlyPolicy.None;
     options.Secure = Microsoft.AspNetCore.Http.CookieSecurePolicy.Always; // Secure flag'ini belirleme
 });
+
+builder.Services.AddScoped<IHttpClientWrapper, HTTPClientWrapper>();
+
 
 var app = builder.Build();
 
