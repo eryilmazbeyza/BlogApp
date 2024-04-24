@@ -20,8 +20,8 @@ public class ApplicationDbContext : DbContext, IApplicationDbContext
 
     public DbSet<User> Users => Set<User>();
     public DbSet<Post> Posts => Set<Post>();
-
-
+    public DbSet<Category> Categories => Set<Category>();
+    public DbSet<Comment> Comments => Set<Comment>();
 
     protected override void OnModelCreating(ModelBuilder builder)
     {

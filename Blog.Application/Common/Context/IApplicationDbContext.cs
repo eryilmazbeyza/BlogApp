@@ -7,6 +7,8 @@ public interface IApplicationDbContext
 {
     DbSet<User> Users { get; }
     DbSet<Post> Posts { get; }
+    DbSet<Category> Categories { get; }
+    DbSet<Comment> Comments { get; }
 
     Task<int> SaveChangesAsync(CancellationToken cancellationToken);
 }
