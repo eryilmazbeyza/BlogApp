@@ -63,7 +63,7 @@ namespace Blog.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Categories");
+                    b.ToTable("Categories", (string)null);
                 });
 
             modelBuilder.Entity("Blog.Domain.Entities.Comment", b =>
@@ -108,7 +108,7 @@ namespace Blog.Persistence.Migrations
 
                     b.HasIndex("PostId");
 
-                    b.ToTable("Comments");
+                    b.ToTable("Comments", (string)null);
                 });
 
             modelBuilder.Entity("Blog.Domain.Entities.Post", b =>
@@ -166,7 +166,7 @@ namespace Blog.Persistence.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.ToTable("Posts");
+                    b.ToTable("Posts", (string)null);
                 });
 
             modelBuilder.Entity("Blog.Domain.Entities.User", b =>
@@ -219,7 +219,7 @@ namespace Blog.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Users");
+                    b.ToTable("Users", (string)null);
                 });
 
             modelBuilder.Entity("Blog.Domain.Entities.Comment", b =>
