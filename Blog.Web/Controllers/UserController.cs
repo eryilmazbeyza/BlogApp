@@ -15,7 +15,7 @@ public class UserController : Controller
     }
 
     [HttpGet]
-    public async Task<IActionResult> Index()
+    public ActionResult Index()
     {
         return View();
     }
@@ -37,6 +37,38 @@ public class UserController : Controller
 
 
         //login sayfasına yönlenecek
+        return RedirectToAction("Index", "User");
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> UpdateUser(int id)
+    {
+        // Kullanıcının güncellenmek istendiği bilgileri almak için HTTP GET isteği gönderilir
+        var userResponse = await _httpClient.GetAsync<UserViewModel>($"Users/{id}", "your_token_here", null); // "your_token_here" yerine geçerli bir token eklemelisiniz
+
+        if (!userResponse.isSuccess)
+        {
+            // Kullanıcı bulunamadıysa uygun bir hata işlemi gerçekleştirilebilir
+            ModelState.AddModelError(string.Empty, "User not found");
+            return View("Error");
+        }
+
+        // Kullanıcı bilgileri güncelleme formuna gönderilir
+        return View(userResponse.Data);
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> UpdateUser(UserViewModel userViewModel)
+    {
+        var serializedModel = JsonConvert.SerializeObject(userViewModel);
+
+        var response = await _httpClient.PutAsync<UserViewModel>("Users", "your_token_here", serializedModel); // "your_token_here" yerine geçerli bir token eklemelisiniz
+        if (!response.isSuccess)
+        {
+            ModelState.AddModelError(string.Empty, "Error Occurred");
+            return View(userViewModel);
+        }
+
         return RedirectToAction("Index", "User");
     }
 

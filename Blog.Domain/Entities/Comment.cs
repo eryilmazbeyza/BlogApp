@@ -6,5 +6,5 @@ namespace Blog.Domain.Entities;
 public class Comment : BaseAuditableEntity
 {
     public string? Content { get; set; }
-    public Post? Post { get; set; } = null!;
+    public Post? Post { get; set; }
 }

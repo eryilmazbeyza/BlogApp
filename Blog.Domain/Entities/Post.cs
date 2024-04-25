@@ -10,4 +10,5 @@ public class Post : BaseAuditableEntity
     public int? Rating { get; set; }
 
     public Category? Category { get; set; }
+    public Post? Posts { get; set; }
 }

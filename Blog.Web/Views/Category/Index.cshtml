@@ -40,7 +40,7 @@
                     @Html.DisplayNameFor(model => model.LastModifiedBy)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.CategoryId)
+                    @Html.DisplayNameFor(model => model.Id)
                 </th>
                 <th>
                     Actions
@@ -71,12 +71,12 @@
                         @Html.DisplayFor(modelItem => item.LastModifiedBy)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.CategoryId)
+                        @Html.DisplayFor(modelItem => item.Id)
                     </td>
                     <td>
                         <div class="col">
-                            @Html.ActionLink("Edit", "EditCategory", new { id = item.CategoryId })
-                            @Html.ActionLink("Delete", "DeleteCategory", new { id = item.CategoryId })
+                            @Html.ActionLink("Edit", "EditCategory", new { id = item.Id })
+                            @Html.ActionLink("Delete", "DeleteCategory", new { id = item.Id })
                         </div>
                     </td>
                 </tr>

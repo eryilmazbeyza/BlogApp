@@ -1,10 +1,106 @@
-﻿using Blog.Web.Models;
+﻿using Blog.Web.HttpClient;
+using Blog.Web.Models;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 
 namespace Blog.Web.Controllers;
 
 public class PostController : Controller
 {
+    private readonly IHttpClientWrapper _httpClient;
+
+    public PostController(IHttpClientWrapper httpClient)
+    {
+        _httpClient = httpClient;
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> Index()
+    {
+        try
+        {
+            // Tüm postları getirmek için bir HTTP GET isteği gönderilir
+            var postsResponse = await _httpClient.GetAsync<List<PostViewModel>>("Post", "your_token_here", null); // "your_token_here" yerine geçerli bir token eklemelisiniz
+
+            if (!postsResponse.isSuccess)
+            {
+                // Postlar getirilemediyse uygun bir hata işlemi gerçekleştirilebilir
+                ModelState.AddModelError(string.Empty, "Error Occurred");
+                return View("Error");
+            }
+
+            // Post listesi görüntülenir
+            return View(postsResponse.Data);
+        }
+        catch (Exception ex)
+        {
+            // Exception yakalanırsa uygun bir hata işlemi gerçekleştirilebilir
+            ModelState.AddModelError(string.Empty, "An error occurred while processing your request.");
+            return View("Error");
+        }
+    }
+
+    [HttpGet]
+    public IActionResult AddPost()
+    {
+        return View();
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> AddPost(PostViewModel postViewModel)
+    {
+        var serializedModel = JsonConvert.SerializeObject(postViewModel);
+
+        var response = await _httpClient.PostAsync<long>("Post", "your_token_here", serializedModel); // "your_token_here" yerine geçerli bir token eklemelisiniz
+        if (!response.isSuccess)
+            ModelState.AddModelError(string.Empty, "Error Occurred");
+
+        // Eğer Post ekleme başarılı ise, kullanıcıyı Post listesine yönlendir
+        return RedirectToAction("Index", "Post");
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> UpdatePost(int id)
+    {
+        var postResponse = await _httpClient.GetAsync<PostViewModel>($"Post/{id}", "your_token_here", null); // "your_token_here" yerine geçerli bir token eklemelisiniz
+
+        if (!postResponse.isSuccess)
+        {
+            ModelState.AddModelError(string.Empty, "Post not found");
+            return View("Error");
+        }
+
+        return View(postResponse.Data);
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> UpdatePost(PostViewModel postViewModel)
+    {
+        var serializedModel = JsonConvert.SerializeObject(postViewModel);
+
+        var response = await _httpClient.PutAsync<PostViewModel>("Post", "your_token_here", serializedModel); // "your_token_here" yerine geçerli bir token eklemelisiniz
+        if (!response.isSuccess)
+        {
+            ModelState.AddModelError(string.Empty, "Error Occurred");
+            return View(postViewModel);
+        }
+
+        return RedirectToAction("Index", "Post");
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> DeletePost(int id)
+    {
+        var response = await _httpClient.DeleteAsync($"Post/{id}", "your_token_here"); // "your_token_here" yerine geçerli bir token eklemelisiniz
+
+        if (!response.isSuccess)
+        {
+            ModelState.AddModelError(string.Empty, "Error Occurred");
+        }
+
+        return RedirectToAction("Index", "Post");
+    }
+}
 
     //[HttpGet]
     //public async Task<IActionResult> Index(string searchBy, string search)
@@ -139,4 +235,4 @@ public class PostController : Controller
     //    }
     //    return View("Index", new List<PostViewModel>());
     //}
-}
+

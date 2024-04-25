@@ -132,4 +132,34 @@ public class HTTPClientWrapper : IHttpClientWrapper
         return result;
     }
 
+    public async Task<Result> DeleteAsync(string url, string token)
+    {
+        string apiUrl = _configuration.GetConnectionString("ApiUrl") ?? "";
+
+        Result result = new Result();
+        using (var httpClient = new RestClient($"{apiUrl}"))
+        {
+            var request = new RestRequest($"/{url}", Method.Delete);
+            request.AddHeader("Accept", "application/json");
+            request.AddHeader("Authorization", "Bearer " + token);
+            request.Timeout = 30000;
+
+            var response = await httpClient.ExecuteAsync<Result>(request);
+            if (response.Data != null)
+            {
+                if (response.Data.isSuccess == false)
+                {
+                    result.isSuccess = response.Data.isSuccess;
+                    result.message = response.Data.message;
+                }
+                else
+                {
+                    result = response.Data;
+                }
+            }
+        }
+
+        return result;
+    }
+
 }

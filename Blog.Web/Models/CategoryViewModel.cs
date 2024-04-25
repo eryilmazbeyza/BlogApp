@@ -5,8 +5,6 @@ namespace Blog.Web.Models;
 
 public class CategoryViewModel: BaseAuditableEntityViewModel
 {
-    [Key]
-    public int CategoryId { get; set; }
     public string? Name { get; set; }
     public string? Description { get; set; }
 

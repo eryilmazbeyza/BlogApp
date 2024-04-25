@@ -37,7 +37,7 @@
                     @Html.DisplayNameFor(model => model.LastModifiedBy)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.CommentId)
+                    @Html.DisplayNameFor(model => model.Id)
                 </th>
                 <th>
                     Actions
@@ -65,12 +65,12 @@
                         @Html.DisplayFor(modelItem => item.LastModifiedBy)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.CommentId)
+                        @Html.DisplayFor(modelItem => item.Id)
                     </td>
                     <td>
                         <div class="col">
-                            @Html.ActionLink("Edit", "EditComment", new { id = item.CommentId })
-                            @Html.ActionLink("Delete", "DeleteComment", new { id = item.CommentId })
+                            @Html.ActionLink("Edit", "EditComment", new { id = item.Id })
+                            @Html.ActionLink("Delete", "DeleteComment", new { id = item.Id })
                         </div>
                     </td>
                 </tr>
