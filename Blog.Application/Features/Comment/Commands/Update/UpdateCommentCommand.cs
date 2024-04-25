@@ -32,7 +32,7 @@ internal sealed class CreateBlogCommandHandler : IRequestHandler<UpdateCommentCo
             .SingleOrDefaultAsync(x => x.Id == request.Id, cancellationToken);
 
         if (comm is null)
-            return Result.Failure("Post bulunamadı");
+            return Result.Failure("Comment bulunamadı");
 
         if (!string.IsNullOrEmpty(request.Content))
             comm.Content = request.Content;
